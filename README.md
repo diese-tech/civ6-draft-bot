@@ -1,36 +1,78 @@
-**Discord Bot**
+# MontezuBot
 
-This is a Python script that uses the discord.py library to create a Discord bot. The bot provides various commands and features for online gaming sessions.
+MontezuBot is a **Civilization VI Discord game-session bot** built to coordinate multiplayer setup, voting, leader management, concessions, results, and lightweight league/community workflows.
 
-### Features
+The project grew around the practical friction of organizing Civ games in Discord: getting players aligned on settings, tracking decisions, managing leader-related actions, and keeping the session moving without a human moderator doing everything manually.
 
-* Start game sessions
-* Manage player votes
-* Track game results
-* Display leaderboards
-* Send messages and reactions
+> **Status:** Mature lab project. The core bot lives in `civ6_draft_bot.py` and is deployable as a persistent Discord process.
 
-### Commands
+## Core Capabilities
 
-* `.vote`: Start a session and open settings votes
-* `.trade`: Offer to swap full leader lists between two players
-* `.cc`: Start a 2-minute vote to concede the game to another player
-* ...and many more!
+- Starts and coordinates multiplayer game sessions
+- Runs settings/player votes inside Discord
+- Manages leader-related actions and swaps
+- Supports concession voting
+- Tracks game outcomes and leaderboard-oriented data
+- Provides Discord messages/reactions around session state
+- Includes supporting leader-matching and website-sync utilities
 
-### How to Use
+Representative commands include:
 
-1. Install Python and the discord.py library
-2. Create a Discord bot account and obtain a token
-3. Place your bot token in the `TOKEN` variable at the top of this script
-4. Run the script using Python
-5. Invite the bot to your server and start using its commands!
+- `.vote` — start a session and open configuration voting
+- `.trade` — offer a leader-list trade between players
+- `.cc` — start a timed concession vote
 
-### Contributing
+Use the bot's built-in command/help surface as the authority for the complete current command set.
 
-If you'd like to contribute to this project, please fork the repository and submit a pull request with your changes.
+## Repository Layout
 
-### Required AI Workflow Review
+```text
+civ6_draft_bot.py       Main Discord bot
+leader_match.py         Supporting leader matching logic
+website_sync.py         Website/data synchronization helper
+docs/                   Project and workflow documentation
+Procfile                 Hosted process entry point
+requirements.txt         Python dependencies
+```
 
-Before beginning AI-assisted implementation, debugging, refactoring, migration, or production fix work in this repository, review [docs/AI_WORKFLOW_GUARDRAILS.md](./docs/AI_WORKFLOW_GUARDRAILS.md).
+## Quick Start
 
-Default behavior: smallest safe change, lowest blast radius, no unrelated file edits, no speculative rewrites, and explicit consideration of scale, queues, caching, indexes, retries, idempotency, rollback, and operational safety.
+### Requirements
+
+- Python 3
+- A Discord application/bot token
+- Discord permissions required by the commands you intend to use
+
+### Install
+
+```bash
+pip install -r requirements.txt
+```
+
+### Configure
+
+Keep Discord tokens and deployment secrets outside source control. Prefer environment variables or the repository's current configuration pattern rather than hard-coding credentials into the bot source.
+
+### Run
+
+```bash
+python civ6_draft_bot.py
+```
+
+A `Procfile` is included for persistent hosted deployments.
+
+## Development Notes
+
+MontezuBot is intentionally focused on **session orchestration**, not becoming a general-purpose Discord utility bot. When extending it:
+
+- keep game-state changes deterministic and attributable;
+- avoid trusting reactions/messages as durable state when a workflow needs restart safety;
+- validate authorization for moderator-only actions at execution time;
+- prefer small, explicit commands over fragile free-text parsing;
+- update documentation when the player-facing workflow changes.
+
+## AI-Assisted Changes
+
+Before AI-assisted implementation, debugging, refactoring, migration, or production fixes, review [`docs/AI_WORKFLOW_GUARDRAILS.md`](./docs/AI_WORKFLOW_GUARDRAILS.md).
+
+The default posture is the smallest safe change with low blast radius, no unrelated rewrites, and explicit consideration of retries, idempotency, rollback, and operational safety where relevant.
